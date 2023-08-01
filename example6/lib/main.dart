@@ -1,8 +1,96 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
+
+@immutable
+class Film {
+  final String id;
+  final String title;
+  final String description;
+  final bool isFavorite;
+
+  const Film(
+      {required this.id,
+      required this.title,
+      required this.description,
+      required this.isFavorite});
+
+  Film copy({required bool isFavorite}) => Film(
+        id: id,
+        title: title,
+        description: description,
+        isFavorite: isFavorite,
+      );
+
+  @override
+  String toString() => 'Film(id: $id,'
+      'title: $title,'
+      'description: $description,'
+      'isFavorite: $isFavorite';
+
+  @override
+  int get hashCode => Object.hashAll([id, isFavorite]);
+}
+
+const allFilms = [
+  Film(
+      id: '1',
+      title: "Calango do Sul",
+      description: "Largartixas invadem o nordeste.",
+      isFavorite: false),
+  Film(
+      id: '2',
+      title: "Calango do Norte",
+      description: "Largartixas invadem o sudeste.",
+      isFavorite: false),
+  Film(
+      id: '3',
+      title: "Calango do Oeste",
+      description: "Largartixas invadem a praia.",
+      isFavorite: false),
+  Film(
+      id: '4',
+      title: "Calango do Leste",
+      description: "Largartixas migram pra dentro do continente.",
+      isFavorite: false),
+];
+
+class FilmsNotifier extends StateNotifier<List<Film>> {
+  FilmsNotifier() : super(allFilms);
+  void update(Film film, bool isFavorite) {
+    state = state
+        .map((thisFilm) => thisFilm.id == film.id
+            ? thisFilm.copy(isFavorite: isFavorite)
+            : thisFilm)
+        .toList();
+  }
+}
+
+enum FavoriteStatus {
+  all,
+  favorite,
+  notFavorite,
+}
+
+final favoriteStatusProvider =
+    StateProvider<FavoriteStatus>((_) => FavoriteStatus.all);
+
+final allFilmsProvider =
+    StateNotifierProvider<FilmsNotifier, List<Film>>((_) => FilmsNotifier());
+
+final favoriteFilmsProvider = Provider<Iterable<Film>>((ref) {
+  return ref.watch(allFilmsProvider).where(
+        (film) => film.isFavorite,
+      );
+});
+final notFavoriteFilmsProvider = Provider<Iterable<Film>>((ref) {
+  return ref.watch(allFilmsProvider).where(
+        (film) => !film.isFavorite,
+      );
+});
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -11,115 +99,93 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a blue toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      darkTheme: ThemeData.dark(),
+      themeMode: ThemeMode.dark,
+      debugShowCheckedModeBanner: false,
+      home: HomePage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
+class HomePage extends ConsumerWidget {
+  const HomePage({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Scaffold(
+        appBar: AppBar(title: const Text('Films')),
+        body: Column(
+          children: [
+            const FilterWidget(),
+            Consumer(
+              builder: (context, ref, child) {
+                final filter = ref.watch(favoriteStatusProvider);
+                switch (filter) {
+                  case FavoriteStatus.all:
+                    return FilmsList(provider: allFilmsProvider);
+                  case FavoriteStatus.favorite:
+                    return FilmsList(provider: favoriteFilmsProvider);
+                  case FavoriteStatus.notFavorite:
+                    return FilmsList(provider: notFavoriteFilmsProvider);
+                }
+              },
+            )
+          ],
+        ));
+  }
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class FilmsList extends ConsumerWidget {
+  final AlwaysAliveProviderBase<Iterable<Film>> provider;
+  const FilmsList({super.key, required this.provider});
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final films = ref.watch(provider);
+    return Expanded(
+      child: ListView.builder(
+        itemCount: films.length,
+        itemBuilder: (context, index) {
+          final film = films.elementAt(index);
+          final favoriteIcon = film.isFavorite
+              ? const Icon(Icons.favorite)
+              : const Icon(Icons.favorite_border);
+          return ListTile(
+            title: Text(film.title),
+            subtitle: Text(film.description),
+            trailing: IconButton(
+                onPressed: () {
+                  final isFavorite = !film.isFavorite;
+                  ref.read(allFilmsProvider.notifier).update(film, isFavorite);
+                },
+                icon: favoriteIcon),
+          );
+        },
+      ),
+    );
   }
+}
+
+class FilterWidget extends StatelessWidget {
+  const FilterWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+    return Consumer(
+      builder: (context, ref, child) {
+        return DropdownButton(
+          value: ref.watch(favoriteStatusProvider),
+          items: FavoriteStatus.values
+              .map((fs) => DropdownMenuItem(
+                    value: fs,
+                    child: Text(fs.toString().split('.').last),
+                  ))
+              .toList(),
+          onChanged: (fs) {
+            ref.read(favoriteStatusProvider.notifier).state = fs!;
+          },
+        );
+      },
     );
   }
 }
