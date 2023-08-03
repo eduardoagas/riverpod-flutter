@@ -5,6 +5,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import '../../posts/typedefs/user_id.dart';
 import '../constants/constants.dart';
 import '../models/auth_result.dart';
+import 'env.dart';
 
 class Authenticator {
   UserId? get userId => FirebaseAuth.instance.currentUser?.uid;
@@ -20,7 +21,7 @@ class Authenticator {
   }
 
   Future<AuthResult> loginWithGoogle() async {
-    final GoogleSignIn googleSignIn = GoogleSignIn(scopes: [
+    final GoogleSignIn googleSignIn = GoogleSignIn(clientId: clientId, scopes: [
       Constants.emailScope,
     ]);
 

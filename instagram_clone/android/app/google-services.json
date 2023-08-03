@@ -9,12 +9,20 @@
       "client_info": {
         "mobilesdk_app_id": "1:765609639869:android:ec237cc7095dbe49ef9cd4",
         "android_client_info": {
-          "package_name": "br.eagas.shareappex"
+          "package_name": "com.example.instagram_clone"
         }
       },
       "oauth_client": [
         {
-          "client_id": "765609639869-p0bevjauut1cor3in8h1t4l1fhe77asp.apps.googleusercontent.com",
+          "client_id": "765609639869-p3l58r698ne7sricsrkmjj0hvakdpe6i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.instagram_clone",
+            "certificate_hash": "db17fa2aa07b4f75f8150e78306a07e896c3e5b5"
+          }
+        },
+        {
+          "client_id": "765609639869-mifsonmnt4hh3lequbn04n8ie06go3mn.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -27,8 +35,15 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "765609639869-p0bevjauut1cor3in8h1t4l1fhe77asp.apps.googleusercontent.com",
+              "client_id": "765609639869-mifsonmnt4hh3lequbn04n8ie06go3mn.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "765609639869-6uqgo8qvn7vqlvtd76p29p2onjiq3sbh.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.instagramClone"
+              }
             }
           ]
         }
