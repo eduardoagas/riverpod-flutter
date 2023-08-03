@@ -57,3 +57,5 @@ app.*.map.json
 GoogleService-Info.plist
 google-services.json
 instagram_clone/android/app/google-services.json
+instagram_clone/lib/state/auth/backend/env.dart
+instagram_clone/android/app/google-services.json
