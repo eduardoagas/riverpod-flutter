@@ -53,6 +53,7 @@ class HomePage extends StatelessWidget {
               onPressed: () async {
                 final result = await Authenticator().loginWithGoogle();
                 result.log();
+                //print(result);
               },
               child: const Text('Sign in with Google')),
           TextButton(
