@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:instagram_clone/state/auth/providers/auth_state_providers.dart';
 import 'package:instagram_clone/state/auth/providers/is_logged_in_provider.dart';
+import 'package:instagram_clone/views/components/loading/loading_screen.dart';
 import 'firebase_options.dart';
 
 import 'dart:developer' as devtools show log;
@@ -59,9 +60,11 @@ class MainView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('Title')),
       body: Consumer(
-        builder: (context, ref, child) {
+        builder: (_, ref, child) {
           return TextButton(
               onPressed: () async {
+                LoadingScreen.instance()
+                    .show(context: context, text: 'Hello world');
                 await ref.read(authStateProvider.notifier).logOut();
               },
               child: const Text('Logout'));
