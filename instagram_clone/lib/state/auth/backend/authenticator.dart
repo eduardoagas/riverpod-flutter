@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -16,14 +17,22 @@ class Authenticator {
 
   Future<void> logOut() async {
     await FirebaseAuth.instance.signOut();
-    await GoogleSignIn(clientId: clientId).signOut();
+    if (kIsWeb) {
+      await GoogleSignIn(clientId: webClientId).signOut();
+    } else {
+      await GoogleSignIn().signOut();
+    }
     await FacebookAuth.instance.logOut();
   }
 
   Future<AuthResult> loginWithGoogle() async {
-    final GoogleSignIn googleSignIn = GoogleSignIn(clientId: clientId, scopes: [
-      Constants.emailScope,
-    ]);
+    final GoogleSignIn googleSignIn = kIsWeb
+        ? GoogleSignIn(clientId: webClientId, scopes: [
+            Constants.emailScope,
+          ])
+        : GoogleSignIn(scopes: [
+            Constants.emailScope,
+          ]);
 
     final signInAccount = await googleSignIn.signIn();
     if (signInAccount == null) {
