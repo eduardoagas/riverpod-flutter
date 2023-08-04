@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:instagram_clone/state/auth/backend/authenticator.dart';
+import 'package:instagram_clone/state/auth/providers/auth_state_providers.dart';
+import 'package:instagram_clone/state/auth/providers/is_logged_in_provider.dart';
 import 'firebase_options.dart';
 
 import 'dart:developer' as devtools show log;
@@ -25,44 +27,72 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      darkTheme: ThemeData(
-        brightness: Brightness.dark,
-        primarySwatch: Colors.blueGrey,
-        indicatorColor: Colors.blueGrey,
-      ),
-      theme: ThemeData(
-        brightness: Brightness.dark,
-        primarySwatch: Colors.blue,
-      ),
-      themeMode: ThemeMode.dark,
-      debugShowCheckedModeBanner: false,
-      home: const HomePage(),
-    );
+        darkTheme: ThemeData(
+          brightness: Brightness.dark,
+          primarySwatch: Colors.blueGrey,
+          indicatorColor: Colors.blueGrey,
+        ),
+        theme: ThemeData(
+          brightness: Brightness.dark,
+          primarySwatch: Colors.blue,
+        ),
+        themeMode: ThemeMode.dark,
+        debugShowCheckedModeBanner: false,
+        home: Consumer(
+          builder: (context, ref, child) {
+            final isLoggedIn = ref.watch(isLoggedInProvider);
+            if (isLoggedIn) {
+              return const MainView();
+            } else {
+              return const LoginView();
+            }
+          },
+        ));
   }
 }
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+//for when you are already logged
+class MainView extends StatelessWidget {
+  const MainView({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text('Title')),
-        body: Column(children: [
-          TextButton(
+      appBar: AppBar(title: const Text('Title')),
+      body: Consumer(
+        builder: (context, ref, child) {
+          return TextButton(
               onPressed: () async {
-                final result = await Authenticator().loginWithGoogle();
-                result.log();
-                //print(result);
+                await ref.read(authStateProvider.notifier).logOut();
               },
-              child: const Text('Sign in with Google')),
-          TextButton(
-            onPressed: () async {
-              final result = await Authenticator().loginWithFacebook();
-              result.log();
-            },
-            child: const Text('Sign in with Facebook'),
-          )
-        ]));
+              child: const Text('Logout'));
+        },
+      ),
+    );
+  }
+}
+
+// for when you ain logged
+class LoginView extends ConsumerWidget {
+  const LoginView({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Main View'),
+      ),
+      body: Column(children: [
+        TextButton(
+            onPressed: ref.read(authStateProvider.notifier).loginWithGoogle,
+            child: const Text('Sign in with Google')),
+        TextButton(
+          onPressed: ref.read(authStateProvider.notifier).loginWithFacebook,
+          child: const Text('Sign in with Facebook'),
+        )
+      ]),
+    );
   }
 }

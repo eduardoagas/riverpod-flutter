@@ -16,7 +16,7 @@ class Authenticator {
 
   Future<void> logOut() async {
     await FirebaseAuth.instance.signOut();
-    await GoogleSignIn().signOut();
+    await GoogleSignIn(clientId: clientId).signOut();
     await FacebookAuth.instance.logOut();
   }
 
