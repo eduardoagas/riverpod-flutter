@@ -22,7 +22,7 @@ class Authenticator {
     } else {
       await GoogleSignIn().signOut();
     }
-    await FacebookAuth.instance.logOut();
+    //await FacebookAuth.instance.logOut();
   }
 
   Future<AuthResult> loginWithGoogle() async {
