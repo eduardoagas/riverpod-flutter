@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:instagram_clone/views/components/loading/loading_screen_controller.dart';
 
 import '../constants/strings.dart';
@@ -29,9 +28,9 @@ class LoadingScreen {
   LoadingScreenController? showOverlay(
       {required BuildContext context, required String text}) {
     final state = Overlay.of(context);
-    if (state == null) {
+    /*if (state == null) {
       return null;
-    }
+    }*/
     final textController = StreamController<String>();
     textController.add(text);
     final renderBox = context.findRenderObject() as RenderBox;
