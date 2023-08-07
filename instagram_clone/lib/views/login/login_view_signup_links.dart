@@ -28,7 +28,7 @@ class LoginViewSignupLinks extends StatelessWidget {
               );
             }),
         BaseText.plain(
-          text: Strings.signUpOn,
+          text: Strings.orCreateAnAccountOn,
         ),
         BaseText.link(
             text: Strings.google,
