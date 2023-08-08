@@ -1,3 +1,5 @@
+//firestore database 
+
 rules_version = '2';
 service cloud.firestore {
     match /databases/{database}/documents{
@@ -5,6 +7,17 @@ service cloud.firestore {
             allow read, update: if request.auth != null;
             allow create: if request.auth != null;
             allow delete: if request.auth != null && ((collectionName == "likes" || collectionName == "comments" || request.auth.uid == resource.data.uid));
+        }
+    }
+}
+
+//storage
+rules_version = '2';
+service firebase.storage {
+    match /b/{bucket}/o {
+        match /{collectionId}/{allPaths=**}{
+            allow create, update, write: if request.auth != null && request.auth.uid == collectionId;
+            allow read: if request.auth != null;
         }
     }
 }
