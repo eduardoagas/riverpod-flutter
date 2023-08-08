@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:instagram_clone/state/auth/providers/auth_state_providers.dart';
 import 'package:instagram_clone/state/auth/providers/is_loading_provider.dart';
 import 'package:instagram_clone/state/auth/providers/is_logged_in_provider.dart';
+import 'package:instagram_clone/views/components/animations/empty_contents_animation_view.dart';
 import 'package:instagram_clone/views/components/loading/loading_screen.dart';
 import 'package:instagram_clone/views/login/login_view.dart';
 import 'firebase_options.dart';
@@ -74,11 +75,16 @@ class MainView extends StatelessWidget {
       appBar: AppBar(title: const Text('Title')),
       body: Consumer(
         builder: (_, ref, child) {
-          return TextButton(
-              onPressed: () async {
-                await ref.read(authStateProvider.notifier).logOut();
-              },
-              child: const Text('Logout'));
+          return SingleChildScrollView(
+            child: Column(children: [
+              TextButton(
+                  onPressed: () async {
+                    await ref.read(authStateProvider.notifier).logOut();
+                  },
+                  child: const Text('Logout')),
+              const EmptyContentsAnimationView(),
+            ]),
+          );
         },
       ),
     );
