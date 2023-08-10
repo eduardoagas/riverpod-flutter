@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:instagram_clone/state/auth/providers/auth_state_providers.dart';
 import 'package:instagram_clone/state/auth/providers/is_loading_provider.dart';
 import 'package:instagram_clone/state/auth/providers/is_logged_in_provider.dart';
-import 'package:instagram_clone/views/components/animations/empty_contents_animation_view.dart';
 import 'package:instagram_clone/views/components/loading/loading_screen.dart';
 import 'package:instagram_clone/views/login/login_view.dart';
+import 'package:instagram_clone/views/main/main_view.dart';
 import 'firebase_options.dart';
 
 /*import 'dart:developer' as devtools show log;
@@ -62,31 +61,5 @@ class MyApp extends StatelessWidget {
             }
           },
         ));
-  }
-}
-
-//for when you are already logged
-class MainView extends StatelessWidget {
-  const MainView({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Title')),
-      body: Consumer(
-        builder: (_, ref, child) {
-          return SingleChildScrollView(
-            child: Column(children: [
-              TextButton(
-                  onPressed: () async {
-                    await ref.read(authStateProvider.notifier).logOut();
-                  },
-                  child: const Text('Logout')),
-              const EmptyContentsAnimationView(),
-            ]),
-          );
-        },
-      ),
-    );
   }
 }
