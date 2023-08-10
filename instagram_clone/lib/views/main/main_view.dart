@@ -17,68 +17,73 @@ class MainView extends ConsumerStatefulWidget {
 }
 
 class _MainViewState extends ConsumerState<MainView> {
-  final tabBarView = const TabBarView(children: [
-    UserPostsView(),
-    UserPostsView(),
-    UserPostsView(),
-  ]);
-
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 3,
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            Strings.appName,
-          ),
-          actions: [
-            IconButton(
-              icon: const FaIcon(
-                FontAwesomeIcons.film,
-              ),
-              onPressed: () async {},
+          appBar: AppBar(
+            title: const Text(
+              Strings.appName,
             ),
-            IconButton(
-              icon: const Icon(
-                Icons.add_photo_alternate_outlined,
+            actions: [
+              IconButton(
+                icon: const FaIcon(
+                  FontAwesomeIcons.film,
+                ),
+                onPressed: () async {},
               ),
-              onPressed: () async {},
-            ),
-            IconButton(
-              icon: const Icon(
-                Icons.logout,
+              IconButton(
+                icon: const Icon(
+                  Icons.add_photo_alternate_outlined,
+                ),
+                onPressed: () async {},
               ),
-              onPressed: () async {
-                final shoudLogOut = await const LogoutDialog()
-                    .present(context)
-                    .then((value) => value ?? false);
-                if (shoudLogOut) {
-                  await ref.read(authStateProvider.notifier).logOut();
-                }
-              },
-            ),
-          ],
-          bottom: const TabBar(
-            tabs: [
-              Tab(
-                icon: Icon(Icons.person),
+              IconButton(
+                icon: const Icon(
+                  Icons.logout,
+                ),
+                onPressed: () async {
+                  final shoudLogOut = await const LogoutDialog()
+                      .present(context)
+                      .then((value) => value ?? false);
+                  if (shoudLogOut) {
+                    await ref.read(authStateProvider.notifier).logOut();
+                  }
+                },
               ),
-              Tab(
-                icon: Icon(Icons.search),
-              ),
-              Tab(
-                icon: Icon(Icons.home),
-              )
             ],
+            bottom: const TabBar(
+              tabs: [
+                Tab(
+                  icon: Icon(Icons.person),
+                ),
+                Tab(
+                  icon: Icon(Icons.search),
+                ),
+                Tab(
+                  icon: Icon(Icons.home),
+                )
+              ],
+            ),
           ),
-        ),
-        body: (kIsWeb)
-            ? SingleChildScrollView(
-                child: tabBarView,
-              )
-            : tabBarView,
-      ),
+          body: const TabBarView(children: [
+            (kIsWeb)
+                ? SingleChildScrollView(
+                    child: UserPostsView(),
+                  )
+                : UserPostsView(),
+            (kIsWeb)
+                ? SingleChildScrollView(
+                    child: UserPostsView(),
+                  )
+                : UserPostsView(),
+            (kIsWeb)
+                ? SingleChildScrollView(
+                    child: UserPostsView(),
+                  )
+                : UserPostsView(),
+          ])),
     );
   }
 }
