@@ -2,12 +2,12 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:instagram_clone/state/posts/models/post.dart';
+import 'package:instagram_clone/state/posts/models/post_key.dart';
 
 import '../../../constants/firebase_collection.dart';
 import '../../../constants/firebase_field.dart';
 import '../../auth/providers/user_id_provider.dart';
-import '../post.dart';
-import '../post_key.dart';
 
 final userPostsProvider = StreamProvider.autoDispose<Iterable<Post>>((ref) {
   final userId = ref.watch(userIdProvider);
