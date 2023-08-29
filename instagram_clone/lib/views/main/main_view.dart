@@ -70,7 +70,7 @@ class _MainViewState extends ConsumerState<MainView> {
           body: const TabBarView(children: [
             (kIsWeb)
                 ? SingleChildScrollView(
-                    child: UserPostsView(),
+                    child: Expanded(child: UserPostsView()),
                   )
                 : UserPostsView(),
             (kIsWeb)
