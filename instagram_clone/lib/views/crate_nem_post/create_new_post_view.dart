@@ -17,7 +17,8 @@ import '../../state/post_settings/models/post_setting.dart';
 class CreateNewPostView extends StatefulHookConsumerWidget {
   final File fileToPost;
   final FileType fileType;
-  const CreateNewPostView(this.fileToPost, this.fileType, {super.key});
+  const CreateNewPostView(
+      {required this.fileToPost, required this.fileType, super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
