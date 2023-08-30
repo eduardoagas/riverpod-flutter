@@ -59,7 +59,24 @@ class _MainViewState extends ConsumerState<MainView> {
                 icon: const Icon(
                   Icons.add_photo_alternate_outlined,
                 ),
-                onPressed: () async {},
+                onPressed: () async {
+                  final imageFile =
+                      await ImagePickerHelper.pickImageFromGallery();
+                  if (imageFile == null) {
+                    return;
+                  }
+                  ref.refresh(postSettingProvider);
+                  if (!mounted) {
+                    return;
+                  }
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => CreateNewPostView(
+                          fileToPost: imageFile, fileType: FileType.image),
+                    ),
+                  );
+                },
               ),
               IconButton(
                 icon: const Icon(
