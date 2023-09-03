@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:instagram_clone/state/auth/providers/auth_state_providers.dart';
 import 'package:instagram_clone/state/image_upload/helpers/image_picker_helper.dart';
 import 'package:instagram_clone/state/image_upload/models/file_type.dart';

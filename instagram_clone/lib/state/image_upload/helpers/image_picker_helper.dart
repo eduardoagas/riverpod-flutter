@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
+import 'package:flutter/foundation.dart' show immutable;
 import 'package:image_picker/image_picker.dart';
 import 'package:instagram_clone/state/image_upload/extensions/to_file.dart';
 

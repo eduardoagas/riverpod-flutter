@@ -7,7 +7,6 @@ import 'package:instagram_clone/state/auth/providers/user_id_provider.dart';
 import 'package:instagram_clone/state/image_upload/models/file_type.dart';
 import 'package:instagram_clone/state/image_upload/models/thumbnail_request.dart';
 import 'package:instagram_clone/state/image_upload/providers/image_uploader_provider.dart';
-import 'package:instagram_clone/state/post_settings/notifiers/post_settings_notifier.dart';
 import 'package:instagram_clone/state/post_settings/providers/post_settings_provider.dart';
 import 'package:instagram_clone/views/components/file_thumbnail_view.dart';
 import 'package:instagram_clone/views/constants/strings.dart';
