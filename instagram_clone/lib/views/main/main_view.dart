@@ -8,7 +8,7 @@ import 'package:instagram_clone/state/image_upload/models/file_type.dart';
 import 'package:instagram_clone/state/post_settings/providers/post_settings_provider.dart';
 import 'package:instagram_clone/views/components/dialogs/alert_dialog_model.dart';
 import 'package:instagram_clone/views/components/dialogs/logout_dialog.dart';
-import 'package:instagram_clone/views/crate_nem_post/create_new_post_view.dart';
+import 'package:instagram_clone/views/create_new_post/create_new_post_view.dart';
 import 'package:instagram_clone/views/tabs/user_posts/user_posts_view.dart';
 
 import '../constants/strings.dart';
