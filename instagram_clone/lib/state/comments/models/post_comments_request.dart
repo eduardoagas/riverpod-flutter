@@ -11,9 +11,9 @@ class RequestForPostAndComments {
   final int? limit;
 
   const RequestForPostAndComments({
-    required this.sortByCreatedAt,
-    required this.dateSorting,
-    required this.limit,
+    this.sortByCreatedAt = true,
+    this.dateSorting = DateSorting.newestOnTop,
+    this.limit,
     required this.postId,
   });
 
