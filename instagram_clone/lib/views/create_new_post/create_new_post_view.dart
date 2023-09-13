@@ -1,8 +1,10 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:image_picker_web/image_picker_web.dart';
 import 'package:instagram_clone/state/auth/providers/user_id_provider.dart';
 import 'package:instagram_clone/state/image_upload/models/file_type.dart';
 import 'package:instagram_clone/state/image_upload/models/thumbnail_request.dart';
@@ -14,10 +16,14 @@ import 'package:instagram_clone/views/constants/strings.dart';
 import '../../state/post_settings/models/post_setting.dart';
 
 class CreateNewPostView extends StatefulHookConsumerWidget {
+  final Uint8List fileWebToPost;
   final File fileToPost;
   final FileType fileType;
   const CreateNewPostView(
-      {required this.fileToPost, required this.fileType, super.key});
+      {required this.fileWebToPost,
+      required this.fileToPost,
+      required this.fileType,
+      super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -29,6 +35,7 @@ class _CreateNewPostViewState extends ConsumerState<CreateNewPostView> {
   Widget build(BuildContext context) {
     final thumbnailRequest = ThumbnailRequest(
       file: widget.fileToPost,
+      fileToWeb: widget.fileWebToPost,
       fileType: widget.fileType,
     );
     final postSettings = ref.watch(postSettingProvider);
@@ -61,6 +68,7 @@ class _CreateNewPostViewState extends ConsumerState<CreateNewPostView> {
                       final isUploaded = await ref
                           .read(imageUploadProvider.notifier)
                           .upload(
+                              webfile: widget.fileWebToPost,
                               file: widget.fileToPost,
                               fileType: widget.fileType,
                               message: message,

@@ -7,7 +7,7 @@ import '../../image_upload/typedefs/is_loading.dart';
 import '../../posts/typedefs/post_id.dart';
 import '../../posts/typedefs/user_id.dart';
 
-class SendCommentNotifier extends StateNotifier<isLoading> {
+class SendCommentNotifier extends StateNotifier<IsLoading> {
   SendCommentNotifier() : super(false);
   set isLoading(bool value) => state = value;
 

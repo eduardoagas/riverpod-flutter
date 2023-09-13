@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:instagram_clone/state/image_upload/exceptions/could_not_build_thumbail_exception.dart';
@@ -16,10 +17,17 @@ final thumbnailProvider =
 
   switch (request.fileType) {
     case FileType.image:
-      image = Image.file(
-        request.file,
-        fit: BoxFit.fitHeight,
-      );
+      if (kIsWeb) {
+        image = Image.memory(
+          request.fileToWeb,
+          fit: BoxFit.fitHeight,
+        );
+      } else {
+        image = Image.file(
+          request.file,
+          fit: BoxFit.fitHeight,
+        );
+      }
       break;
     case FileType.video:
       final thumb = await VideoThumbnail.thumbnailData(

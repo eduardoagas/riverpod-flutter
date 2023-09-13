@@ -21,6 +21,17 @@ class Comment {
         onPostId = json[FirebaseFieldName.postId];
 
   @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Comment &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          comment == other.comment &&
+          createdAt == other.createdAt &&
+          fromUserId == other.fromUserId &&
+          onPostId == other.onPostId;
+
+  @override
   int get hashCode => Object.hashAll(
         [
           id,

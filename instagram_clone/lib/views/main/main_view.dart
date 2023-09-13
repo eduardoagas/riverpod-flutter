@@ -1,7 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:image/image.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:image_picker_web/image_picker_web.dart';
 import 'package:instagram_clone/state/auth/providers/auth_state_providers.dart';
 import 'package:instagram_clone/state/image_upload/helpers/image_picker_helper.dart';
 import 'package:instagram_clone/state/image_upload/models/file_type.dart';
@@ -10,6 +15,7 @@ import 'package:instagram_clone/views/components/dialogs/alert_dialog_model.dart
 import 'package:instagram_clone/views/components/dialogs/logout_dialog.dart';
 import 'package:instagram_clone/views/create_new_post/create_new_post_view.dart';
 import 'package:instagram_clone/views/tabs/user_posts/user_posts_view.dart';
+import 'package:instagram_clone/state/image_upload/extensions/to_file.dart';
 
 import '../constants/strings.dart';
 
@@ -36,6 +42,7 @@ class _MainViewState extends ConsumerState<MainView> {
                   FontAwesomeIcons.film,
                 ),
                 onPressed: () async {
+                  Uint8List list = Uint8List(0);
                   final videoFile =
                       await ImagePickerHelper.pickVideoFromGallery();
                   if (videoFile == null) {
@@ -49,34 +56,44 @@ class _MainViewState extends ConsumerState<MainView> {
                     context,
                     MaterialPageRoute(
                       builder: (_) => CreateNewPostView(
-                          fileToPost: videoFile, fileType: FileType.video),
+                          fileWebToPost: list,
+                          fileToPost: videoFile,
+                          fileType: FileType.video),
                     ),
                   );
                 },
               ),
               IconButton(
-                icon: const Icon(
-                  Icons.add_photo_alternate_outlined,
-                ),
-                onPressed: () async {
-                  final imageFile =
-                      await ImagePickerHelper.pickImageFromGallery();
-                  if (imageFile == null) {
-                    return;
-                  }
-                  ref.refresh(postSettingProvider);
-                  if (!mounted) {
-                    return;
-                  }
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => CreateNewPostView(
-                          fileToPost: imageFile, fileType: FileType.image),
-                    ),
-                  );
-                },
-              ),
+                  icon: const Icon(
+                    Icons.add_photo_alternate_outlined,
+                  ),
+                  onPressed: () async {
+                    final imageFile = (kIsWeb)
+                        ? await ImagePickerHelper.pickImageFromGalleryWeb()
+                        : ImagePickerHelper.pickImageFromGallery();
+                    if (imageFile == null) {
+                      return;
+                    }
+                    Uint8List imageData = (kIsWeb)
+                        ? (imageFile as MediaInfo).data as Uint8List
+                        : Uint8List.fromList(0 as List<int>);
+                    final fileImage = (kIsWeb)
+                        ? File((imageFile as MediaInfo).base64 as String)
+                        : File((imageFile as XFile).path);
+                    ref.refresh(postSettingProvider);
+                    if (!mounted) {
+                      return;
+                    }
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => CreateNewPostView(
+                            fileWebToPost: imageData,
+                            fileToPost: fileImage,
+                            fileType: FileType.image),
+                      ),
+                    );
+                  }),
               IconButton(
                 icon: const Icon(
                   Icons.logout,
@@ -108,7 +125,7 @@ class _MainViewState extends ConsumerState<MainView> {
           body: const TabBarView(children: [
             (kIsWeb)
                 ? SingleChildScrollView(
-                    child: Expanded(child: UserPostsView()),
+                    child: UserPostsView(),
                   )
                 : UserPostsView(),
             (kIsWeb)

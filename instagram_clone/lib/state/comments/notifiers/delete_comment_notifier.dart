@@ -5,7 +5,7 @@ import 'package:instagram_clone/state/image_upload/typedefs/is_loading.dart';
 
 import '../typedefs/comment_id.dart';
 
-class DeleteCommentStateNotifier extends StateNotifier<isLoading> {
+class DeleteCommentStateNotifier extends StateNotifier<IsLoading> {
   DeleteCommentStateNotifier() : super(false);
 
   set isLoading(bool value) => state = value;

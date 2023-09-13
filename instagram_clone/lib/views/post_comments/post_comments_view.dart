@@ -5,9 +5,13 @@ import 'package:instagram_clone/state/auth/providers/user_id_provider.dart';
 import 'package:instagram_clone/state/comments/models/post_comments_request.dart';
 import 'package:instagram_clone/state/comments/providers/post_comments_provider.dart';
 import 'package:instagram_clone/state/comments/providers/send_comment_provider.dart';
+import 'package:instagram_clone/views/components/animations/empty_contents_with_text_animation_view.dart';
+import 'package:instagram_clone/views/components/animations/loading_animation_view.dart';
+import 'package:instagram_clone/views/components/comment/comment_tile.dart';
 import 'package:instagram_clone/views/extensions/dismiss_keyboard.dart';
 
 import '../../state/posts/typedefs/post_id.dart';
+import '../components/animations/error_animation_view.dart';
 import '../constants/strings.dart';
 
 class PostCommentView extends HookConsumerWidget {
@@ -52,6 +56,37 @@ class PostCommentView extends HookConsumerWidget {
           direction: Axis.vertical,
           children: [
             Expanded(
+                flex: 4,
+                child: comments.when(
+                  data: (comments) {
+                    if (comments.isEmpty) {
+                      return const SingleChildScrollView(
+                          child: EmptyContentsWithTextAnimationView(
+                              text: Strings.noCommentsYet));
+                    }
+                    return RefreshIndicator(
+                      onRefresh: () {
+                        ref.refresh(postCommentsProvider(request.value));
+                        return Future.delayed(const Duration(seconds: 1));
+                      },
+                      child: ListView.builder(
+                        padding: const EdgeInsets.all(8.0),
+                        itemCount: comments.length,
+                        itemBuilder: (context, index) {
+                          final comment = comments.elementAt(index);
+                          return CommentTile(comment: comment);
+                        },
+                      ),
+                    );
+                  },
+                  loading: () {
+                    return const LoadingAnimationView();
+                  },
+                  error: (error, stackTrace) {
+                    return const ErrorAnimationView();
+                  },
+                )),
+            Expanded(
               flex: 1,
               child: Align(
                 alignment: Alignment.bottomCenter,
@@ -60,6 +95,15 @@ class PostCommentView extends HookConsumerWidget {
                   child: TextField(
                     textInputAction: TextInputAction.send,
                     controller: commentController,
+                    onSubmitted: (comment) {
+                      if (comment.isNotEmpty) {
+                        _submitCommentWithController(commentController, ref);
+                      }
+                    },
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: Strings.writeYourCommentHere,
+                    ),
                   ),
                 ),
               ),

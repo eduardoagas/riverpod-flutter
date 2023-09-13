@@ -4,5 +4,5 @@ import 'package:instagram_clone/state/comments/notifiers/send_comment_notifier.d
 import '../../image_upload/typedefs/is_loading.dart';
 
 final sendCommentProvider =
-    StateNotifierProvider<SendCommentNotifier, isLoading>(
+    StateNotifierProvider<SendCommentNotifier, IsLoading>(
         (_) => SendCommentNotifier());

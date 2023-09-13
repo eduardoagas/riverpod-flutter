@@ -21,7 +21,9 @@ class FileThumbnailView extends ConsumerWidget {
           child: imageWithAspectRatio.image,
         );
       },
-      error: (error, stackTrace) => const ErrorAnimationView(),
+      error: (error, stackTrace) {
+        return const ErrorAnimationView();
+      },
       loading: () => const LoadingAnimationView(),
     );
   }

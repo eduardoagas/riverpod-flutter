@@ -1,9 +1,11 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image/image.dart' as img;
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image/image.dart';
 import 'package:instagram_clone/constants/firebase_collection.dart';
 import 'package:instagram_clone/state/image_upload/constants/constants.dart';
 import 'package:instagram_clone/state/image_upload/exceptions/could_not_build_thumbail_exception.dart';
@@ -17,12 +19,13 @@ import 'package:instagram_clone/state/posts/typedefs/user_id.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 import 'package:uuid/uuid.dart';
 
-class ImageUploadNotifier extends StateNotifier<isLoading> {
+class ImageUploadNotifier extends StateNotifier<IsLoading> {
   ImageUploadNotifier() : super(false);
 
   set isLoading(bool value) => state = value;
 
   Future<bool> upload({
+    required Uint8List webfile,
     required File file,
     required FileType fileType,
     required String message,
@@ -33,7 +36,12 @@ class ImageUploadNotifier extends StateNotifier<isLoading> {
     late Uint8List thumbnailUint8List;
     switch (fileType) {
       case FileType.image:
-        final fileAsImage = img.decodeImage(file.readAsBytesSync());
+        final Image? fileAsImage;
+        if (kIsWeb) {
+          fileAsImage = img.decodeImage(webfile);
+        } else {
+          fileAsImage = img.decodeImage(file.readAsBytesSync());
+        }
         if (fileAsImage == null) {
           isLoading = false;
           throw const CouldNotBuildThumbnailException();
@@ -80,7 +88,12 @@ class ImageUploadNotifier extends StateNotifier<isLoading> {
       final thumbnailStorageId = thumbnailUploadTask.ref.name;
 
       // upload the original image
-      final originalFileUploadTask = await originalFileRef.putFile(file);
+      late final TaskSnapshot originalFileUploadTask;
+      if (kIsWeb && (fileType == FileType.image)) {
+        originalFileUploadTask = await originalFileRef.putData(webfile);
+      } else {
+        originalFileUploadTask = await originalFileRef.putFile(file);
+      }
       final originalFileStorageId = originalFileUploadTask.ref.name;
 
       // upload the post itself
