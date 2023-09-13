@@ -16,6 +16,7 @@ class PostThumbnailView extends StatelessWidget {
       onTap: onTapped,
       child: (kIsWeb)
           ? ImageNetwork(
+              onTap: onTapped,
               image: post.thumbnailUrl,
               fitAndroidIos: BoxFit.cover,
               fitWeb: BoxFitWeb.cover,
