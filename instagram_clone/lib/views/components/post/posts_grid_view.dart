@@ -21,6 +21,7 @@ class PostsGridView extends StatelessWidget {
             post: post,
             onTapped: () {
               //TODO: remove this code before details view impl
+              print("tapped");
               Navigator.push(
                   context,
                   MaterialPageRoute(

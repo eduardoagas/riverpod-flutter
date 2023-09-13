@@ -6,6 +6,7 @@ import 'package:instagram_clone/state/auth/providers/is_logged_in_provider.dart'
 import 'package:instagram_clone/views/components/loading/loading_screen.dart';
 import 'package:instagram_clone/views/login/login_view.dart';
 import 'package:instagram_clone/views/main/main_view.dart';
+import 'extensions/app_scroll_behaviour.dart';
 import 'firebase_options.dart';
 
 /*import 'dart:developer' as devtools show log;
