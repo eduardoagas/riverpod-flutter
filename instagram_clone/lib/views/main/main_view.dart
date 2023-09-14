@@ -11,6 +11,7 @@ import 'package:instagram_clone/state/auth/providers/auth_state_providers.dart';
 import 'package:instagram_clone/state/image_upload/helpers/image_picker_helper.dart';
 import 'package:instagram_clone/state/image_upload/models/file_type.dart';
 import 'package:instagram_clone/state/post_settings/providers/post_settings_provider.dart';
+import 'package:instagram_clone/state/posts/providers/user_posts_provider.dart';
 import 'package:instagram_clone/views/components/dialogs/alert_dialog_model.dart';
 import 'package:instagram_clone/views/components/dialogs/logout_dialog.dart';
 import 'package:instagram_clone/views/create_new_post/create_new_post_view.dart';
@@ -29,6 +30,7 @@ class MainView extends ConsumerStatefulWidget {
 class _MainViewState extends ConsumerState<MainView> {
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -37,6 +39,29 @@ class _MainViewState extends ConsumerState<MainView> {
               Strings.appName,
             ),
             actions: [
+              if (kIsWeb)
+                Container(
+                  width: size.width * 0.3,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      //Expanded(
+                      ///child:
+                      Center(
+                        child: IconButton(
+                            icon: const Icon(
+                              Icons.refresh,
+                            ),
+                            onPressed: () async {
+                              ref.invalidate(userPostsProvider);
+                            }),
+                      ),
+                      //),
+                      const SizedBox(),
+                    ],
+                  ),
+                ),
               IconButton(
                 icon: const FaIcon(
                   FontAwesomeIcons.film,
@@ -84,7 +109,7 @@ class _MainViewState extends ConsumerState<MainView> {
                     if (!mounted) {
                       return;
                     }
-                    Navigator.push(
+                    final reloadPage = await Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (_) => CreateNewPostView(
@@ -93,6 +118,10 @@ class _MainViewState extends ConsumerState<MainView> {
                             fileType: FileType.image),
                       ),
                     );
+                    if (reloadPage) {
+                      ref.refresh(userPostsProvider);
+                      return Future.delayed(const Duration(seconds: 1));
+                    }
                   }),
               IconButton(
                 icon: const Icon(

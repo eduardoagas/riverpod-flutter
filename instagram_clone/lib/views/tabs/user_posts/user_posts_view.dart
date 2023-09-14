@@ -25,6 +25,7 @@ class UserPostsView extends ConsumerWidget {
             return const EmptyContentsWithTextAnimationView(
                 text: Strings.youHaveNoPosts);
           } else {
+            //ref.refresh(userPostsProvider); // own fix
             return PostsGridView(posts: posts);
           }
         },

@@ -12,6 +12,7 @@ import 'package:instagram_clone/state/image_upload/providers/image_uploader_prov
 import 'package:instagram_clone/state/post_settings/providers/post_settings_provider.dart';
 import 'package:instagram_clone/views/components/file_thumbnail_view.dart';
 import 'package:instagram_clone/views/constants/strings.dart';
+import 'package:instagram_clone/views/main/main_view.dart';
 
 import '../../state/post_settings/models/post_setting.dart';
 
@@ -75,7 +76,7 @@ class _CreateNewPostViewState extends ConsumerState<CreateNewPostView> {
                               postSettings: postSettings,
                               userId: userId);
                       if (isUploaded && mounted) {
-                        Navigator.of(context).pop();
+                        Navigator.pop(context, true);
                       }
                     }
                   : null,
