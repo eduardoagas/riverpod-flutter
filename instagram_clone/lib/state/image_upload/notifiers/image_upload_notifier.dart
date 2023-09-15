@@ -89,7 +89,7 @@ class ImageUploadNotifier extends StateNotifier<IsLoading> {
 
       // upload the original image
       late final TaskSnapshot originalFileUploadTask;
-      if (kIsWeb && (fileType == FileType.image)) {
+      if (kIsWeb) {
         originalFileUploadTask = await originalFileRef.putData(webfile);
       } else {
         originalFileUploadTask = await originalFileRef.putFile(file);

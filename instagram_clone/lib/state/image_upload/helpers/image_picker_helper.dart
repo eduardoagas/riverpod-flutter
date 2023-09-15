@@ -20,6 +20,11 @@ class ImagePickerHelper {
     return fileInfo;
   }
 
+  static Future<MediaInfo?> pickVideoFromGalleryWeb() async {
+    final fileInfo = await ImagePickerWeb.getVideoInfo; //get image
+    return fileInfo;
+  }
+
   static Future<XFile?> pickImageFromGallery() =>
       _imagePicker.pickImage(source: ImageSource.gallery);
   //_imagePicker.pickImage(source: ImageSource.gallery).toFile();

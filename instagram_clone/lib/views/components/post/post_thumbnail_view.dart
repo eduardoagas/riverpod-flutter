@@ -21,7 +21,6 @@ class PostThumbnailView extends StatelessWidget {
               fitAndroidIos: BoxFit.cover,
               fitWeb: BoxFitWeb.cover,
               fullScreen: true,
-              curve: Curves.easeIn,
               height: size.width,
               width: size.width,
             )

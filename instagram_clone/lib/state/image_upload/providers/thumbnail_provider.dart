@@ -30,11 +30,16 @@ final thumbnailProvider =
       }
       break;
     case FileType.video:
-      final thumb = await VideoThumbnail.thumbnailData(
-        video: request.file.path,
-        imageFormat: ImageFormat.JPEG,
-        quality: 75,
-      );
+      final thumb;
+      if (kIsWeb) {
+        thumb = null;
+      } else {
+        thumb = await VideoThumbnail.thumbnailData(
+          video: request.file.path,
+          imageFormat: ImageFormat.JPEG,
+          quality: 75,
+        );
+      }
       if (thumb == null) {
         throw const CouldNotBuildThumbnailException();
       }

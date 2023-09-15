@@ -68,24 +68,35 @@ class _MainViewState extends ConsumerState<MainView> {
                 ),
                 onPressed: () async {
                   Uint8List list = Uint8List(0);
-                  final videoFile =
-                      await ImagePickerHelper.pickVideoFromGallery();
+                  final videoFile = (kIsWeb)
+                      ? await ImagePickerHelper.pickVideoFromGalleryWeb()
+                      : await ImagePickerHelper.pickVideoFromGallery();
                   if (videoFile == null) {
                     return;
                   }
+                  Uint8List videoData = (kIsWeb)
+                      ? (videoFile as MediaInfo).data as Uint8List
+                      : Uint8List.fromList(0 as List<int>);
+                  final fileVideo = (kIsWeb)
+                      ? File((videoFile as MediaInfo).base64 as String)
+                      : File((videoFile as XFile).path);
                   ref.refresh(postSettingProvider);
                   if (!mounted) {
                     return;
                   }
-                  Navigator.push(
+                  final reloadPage = await Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (_) => CreateNewPostView(
-                          fileWebToPost: list,
-                          fileToPost: videoFile,
+                          fileWebToPost: videoData,
+                          fileToPost: fileVideo,
                           fileType: FileType.video),
                     ),
                   );
+                  if (reloadPage) {
+                    ref.refresh(userPostsProvider);
+                    return Future.delayed(const Duration(seconds: 1));
+                  }
                 },
               ),
               IconButton(
