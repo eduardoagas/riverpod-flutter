@@ -29,11 +29,20 @@ final likeDislikePostProvider = FutureProvider.family
     } catch (_) {
       return false;
     }
-  }else{
+  } else {
     final like = Like(
       postId: request.postId,
       likedBy: request.likedBy,
       date: DateTime.now(),
-    )
+    );
+
+    try {
+      await FirebaseFirestore.instance
+          .collection(FirebaseCollectionName.likes)
+          .add(like);
+      return true;
+    } catch (_) {
+      return false;
+    }
   }
 });
