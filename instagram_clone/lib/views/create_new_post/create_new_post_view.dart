@@ -4,7 +4,6 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:image_picker_web/image_picker_web.dart';
 import 'package:instagram_clone/state/auth/providers/user_id_provider.dart';
 import 'package:instagram_clone/state/image_upload/models/file_type.dart';
 import 'package:instagram_clone/state/image_upload/models/thumbnail_request.dart';
@@ -12,7 +11,6 @@ import 'package:instagram_clone/state/image_upload/providers/image_uploader_prov
 import 'package:instagram_clone/state/post_settings/providers/post_settings_provider.dart';
 import 'package:instagram_clone/views/components/file_thumbnail_view.dart';
 import 'package:instagram_clone/views/constants/strings.dart';
-import 'package:instagram_clone/views/main/main_view.dart';
 
 import '../../state/post_settings/models/post_setting.dart';
 

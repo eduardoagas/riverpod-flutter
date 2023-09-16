@@ -43,6 +43,5 @@ class LikeButton extends ConsumerWidget {
         );
       },
     );
-    return const Placeholder();
   }
 }

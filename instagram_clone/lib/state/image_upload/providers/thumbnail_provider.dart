@@ -30,7 +30,7 @@ final thumbnailProvider =
       }
       break;
     case FileType.video:
-      final thumb;
+      final Uint8List? thumb;
       if (kIsWeb) {
         thumb = null;
       } else {

@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:image/image.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_picker_web/image_picker_web.dart';
 import 'package:instagram_clone/state/auth/providers/auth_state_providers.dart';
@@ -16,7 +15,6 @@ import 'package:instagram_clone/views/components/dialogs/alert_dialog_model.dart
 import 'package:instagram_clone/views/components/dialogs/logout_dialog.dart';
 import 'package:instagram_clone/views/create_new_post/create_new_post_view.dart';
 import 'package:instagram_clone/views/tabs/user_posts/user_posts_view.dart';
-import 'package:instagram_clone/state/image_upload/extensions/to_file.dart';
 
 import '../constants/strings.dart';
 
@@ -40,7 +38,7 @@ class _MainViewState extends ConsumerState<MainView> {
             ),
             actions: [
               if (kIsWeb)
-                Container(
+                SizedBox(
                   width: size.width * 0.3,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -67,7 +65,6 @@ class _MainViewState extends ConsumerState<MainView> {
                   FontAwesomeIcons.film,
                 ),
                 onPressed: () async {
-                  Uint8List list = Uint8List(0);
                   final videoFile = (kIsWeb)
                       ? await ImagePickerHelper.pickVideoFromGalleryWeb()
                       : await ImagePickerHelper.pickVideoFromGallery();
