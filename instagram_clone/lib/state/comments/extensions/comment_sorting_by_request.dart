@@ -1,7 +1,7 @@
 import 'package:instagram_clone/views/enums/date_sorting.dart';
 
-import '../comment.dart';
-import '../post_comments_request.dart';
+import '../models/comment.dart';
+import '../models/post_comments_request.dart';
 
 extension Sorting on Iterable<Comment> {
   Iterable<Comment> applySortingFrom(RequestForPostAndComments request) {
