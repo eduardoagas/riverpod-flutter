@@ -27,6 +27,7 @@ class UserPostsView extends ConsumerWidget {
           } else {
             //ref.refresh(userPostsProvider); // own fix
             return PostsGridView(posts: posts);
+            //return PostsGridSearchView(posts: posts);
           }
         },
         error: (error, stackTrace) {

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/state/posts/models/post.dart';
 import 'package:instagram_clone/views/components/post/post_thumbnail_view.dart';
-
 import '../../post_details/post_details_view.dart';
 
 class PostsGridView extends StatelessWidget {
@@ -14,7 +13,10 @@ class PostsGridView extends StatelessWidget {
       shrinkWrap: true,
       padding: const EdgeInsets.all(8),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3, mainAxisSpacing: 8.0, crossAxisSpacing: 8.0),
+        crossAxisCount: 3,
+        mainAxisSpacing: 8.0,
+        crossAxisSpacing: 8.0,
+      ),
       itemCount: posts.length,
       itemBuilder: (context, index) {
         final post = posts.elementAt(index);

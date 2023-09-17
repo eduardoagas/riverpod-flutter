@@ -1,5 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:instagram_clone/state/image_upload/models/thumbnail_request.dart';
 import 'package:instagram_clone/state/posts/models/post.dart';
 import 'package:image_network/image_network.dart';
 
@@ -18,11 +20,11 @@ class PostThumbnailView extends StatelessWidget {
           ? ImageNetwork(
               onTap: onTapped,
               image: post.thumbnailUrl,
-              fitAndroidIos: BoxFit.cover,
-              fitWeb: BoxFitWeb.cover,
-              fullScreen: true,
-              height: size.width,
-              width: size.width,
+              //fitAndroidIos: BoxFit.cover,
+              fitWeb: BoxFitWeb.fill,
+              //fullScreen: true,
+              height: size.width / 3,
+              width: size.width / 3,
             )
           : Image.network(post.thumbnailUrl, fit: BoxFit.cover),
     );
