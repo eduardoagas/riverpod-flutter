@@ -16,7 +16,7 @@ class PostImageView extends StatelessWidget {
       child: (kIsWeb)
           ? ImageNetwork(
               //onTap: onTapped,
-              image: post.thumbnailUrl,
+              image: post.fileUrl,
               fitAndroidIos: BoxFit.cover,
               fitWeb: BoxFitWeb.cover,
               fullScreen: true,

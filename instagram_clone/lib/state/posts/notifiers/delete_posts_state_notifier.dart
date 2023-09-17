@@ -15,9 +15,8 @@ class DeletePostStateNotifier extends StateNotifier<IsLoading> {
   set isLoading(bool value) => state = value;
 
   Future<bool> deletePost({required Post post}) async {
-    isLoading = true;
-
     try {
+      isLoading = true;
       //delete the post's thumbnail
       await FirebaseStorage.instance
           .ref()
@@ -45,7 +44,7 @@ class DeletePostStateNotifier extends StateNotifier<IsLoading> {
       //finally delete the post itself
       final postInCollection = await FirebaseFirestore.instance
           .collection(FirebaseCollectionName.posts)
-          .where(FirebaseFieldName.postId, isEqualTo: PostId)
+          .where(FieldPath.documentId, isEqualTo: PostId)
           .limit(1)
           .get();
 
