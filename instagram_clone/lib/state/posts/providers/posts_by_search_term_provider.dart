@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:instagram_clone/constants/firebase_collection.dart';
 import 'package:instagram_clone/constants/firebase_field.dart';
-import 'package:instagram_clone/state/comments/models/comment.dart';
 import 'package:instagram_clone/state/posts/models/post.dart';
 import 'package:instagram_clone/state/posts/typedefs/search_term.dart';
 

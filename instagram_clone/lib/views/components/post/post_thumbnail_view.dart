@@ -1,7 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:instagram_clone/state/image_upload/models/thumbnail_request.dart';
 import 'package:instagram_clone/state/posts/models/post.dart';
 import 'package:image_network/image_network.dart';
 

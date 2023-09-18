@@ -1,0 +1,2 @@
+refactor code to use a Fiebase send method, where you can decide 
+to enable/disable persistence in case of accessing it via web

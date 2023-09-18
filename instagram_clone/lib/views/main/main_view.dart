@@ -10,17 +10,20 @@ import 'package:instagram_clone/state/auth/providers/auth_state_providers.dart';
 import 'package:instagram_clone/state/image_upload/helpers/image_picker_helper.dart';
 import 'package:instagram_clone/state/image_upload/models/file_type.dart';
 import 'package:instagram_clone/state/post_settings/providers/post_settings_provider.dart';
+import 'package:instagram_clone/state/posts/providers/all_posts_provider.dart';
 import 'package:instagram_clone/state/posts/providers/user_posts_provider.dart';
 import 'package:instagram_clone/views/components/dialogs/alert_dialog_model.dart';
 import 'package:instagram_clone/views/components/dialogs/logout_dialog.dart';
 import 'package:instagram_clone/views/create_new_post/create_new_post_view.dart';
+import 'package:instagram_clone/views/tabs/home/home_view.dart';
 import 'package:instagram_clone/views/tabs/search/search_view.dart';
 import 'package:instagram_clone/views/tabs/user_posts/user_posts_view.dart';
-
 import '../constants/strings.dart';
 
 class MainView extends ConsumerStatefulWidget {
-  const MainView({super.key});
+  const MainView({
+    super.key,
+  });
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _MainViewState();
@@ -53,7 +56,7 @@ class _MainViewState extends ConsumerState<MainView> {
                               Icons.refresh,
                             ),
                             onPressed: () async {
-                              ref.invalidate(userPostsProvider);
+                              ref.invalidate(allPostsProvider);
                             }),
                       ),
                       //),
@@ -173,9 +176,9 @@ class _MainViewState extends ConsumerState<MainView> {
                 : SearchView(),
             (kIsWeb)
                 ? SingleChildScrollView(
-                    child: UserPostsView(),
+                    child: HomeView(),
                   )
-                : UserPostsView(),
+                : HomeView(),
           ])),
     );
   }
