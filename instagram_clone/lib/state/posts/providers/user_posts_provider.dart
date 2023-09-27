@@ -9,7 +9,6 @@ import 'package:instagram_clone/state/posts/models/post_key.dart';
 import '../../../constants/firebase_collection.dart';
 import '../../../constants/firebase_field.dart';
 import '../../auth/providers/user_id_provider.dart';
-import 'package:instagram_clone/extensions/firestore_document_extension.dart';
 
 final userPostsProvider = StreamProvider.autoDispose<Iterable<Post>>((ref) {
   final userId = ref.watch(userIdProvider);
@@ -19,7 +18,7 @@ final userPostsProvider = StreamProvider.autoDispose<Iterable<Post>>((ref) {
     controller.sink.add([]);
   };
 
-  if (kIsWeb) FirebaseFirestore.instance.enablePersistence();
+  // if (kIsWeb) FirebaseFirestore.instance.enablePersistence();
 
   final sub = FirebaseFirestore.instance
       .collection(FirebaseCollectionName.posts)
@@ -34,7 +33,7 @@ final userPostsProvider = StreamProvider.autoDispose<Iterable<Post>>((ref) {
       (doc) => !doc.metadata.hasPendingWrites,
     )
         .map((doc) {
-      print(doc.metadata.isFromCache ? "NOT FROM NETWORK" : "FROM NETWORK");
+      //print(doc.metadata.isFromCache ? "NOT FROM NETWORK" : "FROM NETWORK");
       return Post(postId: doc.id, json: doc.data());
     });
     controller.sink.add(posts as Iterable<Post>);

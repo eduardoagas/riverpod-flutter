@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+/*import 'package:cloud_firestore/cloud_firestore.dart';
 
 // https://github.com/furkansarihan/firestore_collection/blob/master/lib/firestore_document.dart
 extension FirestoreDocumentExtension on DocumentReference {
@@ -25,3 +25,4 @@ extension FirestoreQueryExtension on Query {
     }
   }
 }
+*/
