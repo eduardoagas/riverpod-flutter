@@ -98,7 +98,7 @@ class _CreateNewPostViewState extends ConsumerState<CreateNewPostView> {
             ),
             ...PostSetting.values.map((postSetting) => ListTile(
                 //seems to be the same thing as adding tolist in the end
-                title: Text(postSetting.description),
+                title: Text(postSetting.title),
                 subtitle: Text(postSetting.description),
                 trailing: Switch(
                     value: postSettings[postSetting] ?? false,
