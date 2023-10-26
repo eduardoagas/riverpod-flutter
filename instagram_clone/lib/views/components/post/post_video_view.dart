@@ -14,7 +14,7 @@ class PostVideoView extends HookWidget {
   Widget build(BuildContext context) {
     //final controller = VideoPlayerController.network(post.fileUrl);
     final controller =
-        VideoPlayerController.networkUrl(Uri.https(post.fileUrl));
+        VideoPlayerController.networkUrl(Uri.parse(post.fileUrl));
 
     final isVideoPlayerReady = useState(false);
 
